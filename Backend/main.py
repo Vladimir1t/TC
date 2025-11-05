@@ -77,16 +77,21 @@ async def initial_setup():
         logger.info("🚀 Starting initial setup...")
         logger.info("🔄 Initial database shuffle...")
         database.shuffle_database('aggregator.db')
-        
+
         await refresh_search_index()
-        
+
+        # Инициализируем кэши в recommendation_engine
+        logger.info("🔗 Initializing recommendation engine caches...")
+        import recommendation_engine
+        from routers.projects import search_index, project_data_cache
+        recommendation_engine.initialize_caches(search_index, project_data_cache)
+
         # Строим инвертированный индекс для рекомендаций
         logger.info("🔨 Building inverted index for recommendations...")
-        import recommendation_engine
         recommendation_engine.build_inverted_index()
-        
+
         logger.info("✅ Initial setup completed successfully")
-        
+
     except Exception as e:
         logger.error(f"❌ Error during initial setup: {e}")
         raise

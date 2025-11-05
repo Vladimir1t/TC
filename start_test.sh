@@ -32,18 +32,11 @@ sqlite3 Backend/aggregator.db "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIM
 sqlite3 Backend/aggregator.db "CREATE TABLE IF NOT EXISTS tasks (user_id INTEGER, task_type TEXT, completed BOOLEAN DEFAULT 0, PRIMARY KEY (user_id, task_type));" 2>/dev/null
 sqlite3 Backend/aggregator.db "CREATE TABLE IF NOT EXISTS projects (id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT NOT NULL, name TEXT, link TEXT NOT NULL, theme TEXT NOT NULL, is_premium BOOLEAN DEFAULT 0, likes INTEGER DEFAULT 0, subscribers INTEGER DEFAULT 0, user_id INTEGER DEFAULT 1, icon BLOB);" 2>/dev/null
 
-# Таблицы рекомендательной системы (идемпотентно)
+# Таблица для рекомендательной системы (только используемые)
 sqlite3 Backend/aggregator.db "CREATE TABLE IF NOT EXISTS interactions (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, project_id INTEGER NOT NULL, event_type TEXT NOT NULL, ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP);" 2>/dev/null
 sqlite3 Backend/aggregator.db "CREATE INDEX IF NOT EXISTS idx_interactions_user ON interactions(user_id, ts DESC);" 2>/dev/null
 sqlite3 Backend/aggregator.db "CREATE INDEX IF NOT EXISTS idx_interactions_project ON interactions(project_id, ts DESC);" 2>/dev/null
 sqlite3 Backend/aggregator.db "CREATE INDEX IF NOT EXISTS idx_interactions_event ON interactions(event_type, ts DESC);" 2>/dev/null
-sqlite3 Backend/aggregator.db "CREATE TABLE IF NOT EXISTS search_logs (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, query TEXT NOT NULL, ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP);" 2>/dev/null
-sqlite3 Backend/aggregator.db "CREATE INDEX IF NOT EXISTS idx_search_logs_user ON search_logs(user_id, ts DESC);" 2>/dev/null
-sqlite3 Backend/aggregator.db "CREATE TABLE IF NOT EXISTS recommendations_cache (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, project_id INTEGER NOT NULL, score REAL NOT NULL, reason TEXT, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, UNIQUE(user_id, project_id));" 2>/dev/null
-sqlite3 Backend/aggregator.db "CREATE INDEX IF NOT EXISTS idx_recommendations_cache_user ON recommendations_cache(user_id, score DESC);" 2>/dev/null
-sqlite3 Backend/aggregator.db "CREATE TABLE IF NOT EXISTS project_metrics (id INTEGER PRIMARY KEY AUTOINCREMENT, project_id INTEGER NOT NULL, date DATE NOT NULL, subscribers INTEGER DEFAULT 0, likes INTEGER DEFAULT 0, impressions INTEGER DEFAULT 0, clicks INTEGER DEFAULT 0, UNIQUE(project_id, date));" 2>/dev/null
-sqlite3 Backend/aggregator.db "CREATE INDEX IF NOT EXISTS idx_project_metrics ON project_metrics(project_id, date DESC);" 2>/dev/null
-sqlite3 Backend/aggregator.db "CREATE TABLE IF NOT EXISTS user_profiles (user_id INTEGER PRIMARY KEY, profile_json TEXT, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);" 2>/dev/null
 
 # Тестовые данные для проектов, если таблица пуста
 PROJECTS_COUNT=$(sqlite3 Backend/aggregator.db "SELECT COUNT(*) FROM projects;" 2>/dev/null || echo 0)

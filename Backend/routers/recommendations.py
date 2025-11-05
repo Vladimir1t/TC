@@ -111,7 +111,7 @@ async def get_user_recommendations(
 ):
     """
     Получает персональные рекомендации для пользователя
-    
+
     Работает в 3 этапа:
     1. Сбор сигналов (профиль пользователя из опроса + поведение)
     2. Генерация ~1000 кандидатов
@@ -121,21 +121,26 @@ async def get_user_recommendations(
     try:
         conn = get_db_connection()
         conn.row_factory = sqlite3.Row
-        
+
         # Проверяем существование пользователя
         cursor = conn.cursor()
         cursor.execute("SELECT id, preferences, survey_completed FROM users WHERE id = ?", (user_id,))
         user = cursor.fetchone()
-        
+
         if not user:
             # Создаем пользователя если его нет
             cursor.execute("INSERT INTO users (id) VALUES (?)", (user_id,))
             conn.commit()
-        
+
+        # Инициализируем кэши если еще не инициализированы
+        if recommendation_engine.search_index is None:
+            from routers.projects import search_index, project_data_cache
+            recommendation_engine.initialize_caches(search_index, project_data_cache)
+
         # Строим индекс если нужно
         if not recommendation_engine._inverted_index_built:
             recommendation_engine.build_inverted_index()
-        
+
         # Получаем рекомендации
         recommendations = recommendation_engine.get_recommendations(
             user_id=user_id,
@@ -147,10 +152,17 @@ async def get_user_recommendations(
         # Форматируем результат (добавляем base64 иконки)
         formatted_results = []
         for project in recommendations:
-            if project.get("icon"):
-                project["icon"] = f"data:image/png;base64,{base64.b64encode(project['icon']).decode()}"
+            # Форматируем иконку как base64 если она есть
+            icon = project.get("icon")
+            if icon and isinstance(icon, bytes):
+                project["icon"] = f"data:image/png;base64,{base64.b64encode(icon).decode()}"
             else:
                 project["icon"] = None
+
+            # Добавляем алиас для совместимости с Frontend
+            if project.get("name"):
+                project["title"] = project["name"]
+
             formatted_results.append(project)
         
         # Логируем показы (impression) асинхронно
@@ -193,11 +205,16 @@ async def get_similar_projects(
     try:
         conn = get_db_connection()
         conn.row_factory = sqlite3.Row
-        
+
+        # Инициализируем кэши если еще не инициализированы
+        if recommendation_engine.search_index is None:
+            from routers.projects import search_index, project_data_cache
+            recommendation_engine.initialize_caches(search_index, project_data_cache)
+
         # Проверяем существование проекта
         if project_id not in recommendation_engine.search_index:
             raise HTTPException(status_code=404, detail="Проект не найден")
-        
+
         # Строим индекс если нужно
         if not recommendation_engine._inverted_index_built:
             recommendation_engine.build_inverted_index()

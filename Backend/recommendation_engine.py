@@ -14,15 +14,91 @@ from collections import Counter, defaultdict, OrderedDict
 from datetime import datetime, timedelta
 import threading
 
-# Импорты из существующих модулей
-from routers.projects import (
-    search_index, 
-    project_data_cache,
-    normalize_and_stem,
-    expand_query_with_synonyms,
-    calculate_cosine_similarity,
-    stem_word
-)
+# Импорты будут получены через передачу параметров
+# Избегаем циклических импортов
+search_index = None
+project_data_cache = None
+
+def initialize_caches(si, pdc):
+    """Инициализация кэшей из projects модуля"""
+    global search_index, project_data_cache
+    search_index = si
+    project_data_cache = pdc
+
+# Вспомогательные функции для работы с текстом
+def stem_word(word: str) -> str:
+    """Базовая стеммизация для русского и английского языков"""
+    if not word or len(word) < 3:
+        return word
+
+    russian_endings = [
+        'ов', 'ев', 'ин', 'ын', 'ых', 'их', 'ое', 'ее', 'ые', 'ие', 'ому', 'ему',
+        'ыми', 'ими', 'ом', 'ем', 'ах', 'ях', 'ами', 'ями', 'ую', 'юю', 'ей', 'ой',
+        'а', 'я', 'о', 'е', 'и', 'ы', 'у', 'ю', 'ь', 'й', 'ть', 'ти', 'л', 'ла', 'ло', 'ли'
+    ]
+
+    english_endings = [
+        'ing', 'ed', 'es', 's', 'ly', 'er', 'est', 'ment', 'ness', 'tion', 'sion'
+    ]
+
+    for ending in english_endings:
+        if word.endswith(ending) and len(word) > len(ending) + 2:
+            return word[:-len(ending)]
+
+    for ending in russian_endings:
+        if word.endswith(ending) and len(word) > len(ending) + 2:
+            return word[:-len(ending)]
+
+    return word
+
+def normalize_and_stem(text: str) -> Set[str]:
+    """Нормализация текста со стеммингом"""
+    import re
+    words = re.findall(r'\b\w{2,}\b', text.lower())
+    stemmed_words = set()
+
+    for word in words:
+        stemmed_words.add(word)
+        stemmed = stem_word(word)
+        if stemmed != word and len(stemmed) >= 2:
+            stemmed_words.add(stemmed)
+
+    return stemmed_words
+
+def expand_query_with_synonyms(query: str) -> Set[str]:
+    """Расширяет поисковый запрос синонимами с учетом стемминга"""
+    import re
+    words = re.findall(r'\b\w{2,}\b', query.lower())
+    expanded_terms = set()
+
+    for word in words:
+        expanded_terms.add(word)
+        stemmed = stem_word(word)
+        if stemmed != word:
+            expanded_terms.add(stemmed)
+
+    return expanded_terms
+
+def calculate_cosine_similarity(query_tf: Dict, doc_tf: Dict) -> float:
+    """Вычисляет косинусное сходство между запросом и документом"""
+    all_words = set(query_tf.keys()) | set(doc_tf.keys())
+
+    dot_product = 0
+    query_magnitude = 0
+    doc_magnitude = 0
+
+    for word in all_words:
+        query_val = query_tf.get(word, 0)
+        doc_val = doc_tf.get(word, 0)
+
+        dot_product += query_val * doc_val
+        query_magnitude += query_val ** 2
+        doc_magnitude += doc_val ** 2
+
+    if query_magnitude == 0 or doc_magnitude == 0:
+        return 0
+
+    return dot_product / (math.sqrt(query_magnitude) * math.sqrt(doc_magnitude))
 
 # Глобальные кэши с LRU
 _USER_PROFILE_CACHE_MAX_SIZE = 10000  # Максимум 10К пользователей в кэше
@@ -54,19 +130,23 @@ CANDIDATE_LIMITS = {
 def build_inverted_index():
     """Строит инвертированный индекс token -> set(project_ids)"""
     global _inverted_index, _inverted_index_built
-    
+
     with _inverted_index_lock:
         if _inverted_index_built:
             return
-        
+
+        if search_index is None:
+            print("⚠️  search_index не инициализирован, пропускаем построение индекса")
+            return
+
         print("🔨 Строим инвертированный индекс для рекомендаций...")
         _inverted_index = defaultdict(set)
-        
+
         for project_id, project_data in search_index.items():
             tokens = project_data.get('all_tokens', set())
             for token in tokens:
                 _inverted_index[token].add(project_id)
-        
+
         # Конвертируем в обычный dict для экономии памяти
         _inverted_index = dict(_inverted_index)
         _inverted_index_built = True
@@ -483,32 +563,45 @@ def get_recommendations(
     """
     # 1. Получаем профиль пользователя
     user_profile = get_user_profile(user_id, conn)
-    
+
     # 2. Генерируем кандидатов
     candidates = generate_candidates(user_profile, user_id, conn, content_type)
-    
+
     if not candidates:
         # Fallback: популярные проекты
         return get_fallback_recommendations(conn, content_type, limit)
-    
+
     # 3. Реранкинг
     scored_candidates = rerank_candidates(candidates, user_profile, user_id, conn)
-    
+
     # 4. Диверсификация
     diversified = diversify_results(scored_candidates)
-    
+
     # 5. Берем топ-N
     top_candidates = diversified[:limit]
-    
-    # 6. Формируем результат
+
+    # 6. Формируем результат - загружаем полные данные из БД
     results = []
+    cursor = conn.cursor()
+
     for project_id, score, reason in top_candidates:
-        if project_id in project_data_cache:
-            project = dict(project_data_cache[project_id])
+        # Загружаем все данные проекта из БД, включая иконку
+        cursor.execute("""
+            SELECT id, type, name, link as url, theme, is_premium,
+                   likes, subscribers, user_id, icon
+            FROM projects
+            WHERE id = ?
+        """, (project_id,))
+
+        row = cursor.fetchone()
+        if row:
+            project = dict(row)
+            # Используем theme как description для совместимости с Frontend
+            project['description'] = project.get('theme', '')
             project['recommendation_score'] = score
             project['recommendation_reason'] = reason
             results.append(project)
-    
+
     return results
 
 
