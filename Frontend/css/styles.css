@@ -1450,7 +1450,7 @@ body {
 /* Bottom Tabs Container with Liquid Glass */
 .bottom-tabs {
     position: fixed;
-    bottom: 5vh;
+    bottom: 12px;
     left: 12px;
     right: 12px;
     max-width: 420px; /* Ограничение максимальной ширины */
@@ -1632,12 +1632,12 @@ body {
 /* Mobile Responsive */
 @media (max-width: 480px) {
     .bottom-tabs {
-        bottom: 5vh;
+        bottom: 8px;
         left: 8px;
         right: 8px;
         max-width: calc(100% - 32px); /* было 16 */
         padding: var(--space-6) var(--space-2);
-        min-height: 70px;
+        min-height: 60px;
         border-radius: 30px; /* было 20 */
     }
     
@@ -1658,7 +1658,7 @@ body {
 
     .bottom-tabs[data-active-tab="1"]::before {
         transform: translate(calc(100% + 2px), -50%);
-    }
+    } да
 
     .bottom-tabs[data-active-tab="2"]::before {
         transform: translate(calc(200% + 4px), -50%);
