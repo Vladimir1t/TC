@@ -987,6 +987,7 @@ body {
 
 /* Content Grid - вертикальное расположение для блоков на главной */
 .content-grid {
+    position: relative;
     display: flex;
     flex-direction: row; /* горизонтальное расположение */
     overflow-x: auto; /* горизонтальный скролл */
@@ -1061,10 +1062,13 @@ body {
 .tab-content {
     display: none;
     animation: fadeInContent 0.6s var(--ease-standard);
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 .tab-content.active {
     display: block;
+    overflow-x: hidden;
 }
 
 @keyframes fadeInContent {
@@ -1264,6 +1268,9 @@ body {
 
 /* Subscribers Badge - убираем фон, оставляем только иконку и текст */
 .subscribers-mini {
+    position: absolute;
+    left: 0;
+    bottom: 0;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -1443,7 +1450,7 @@ body {
 /* Bottom Tabs Container with Liquid Glass */
 .bottom-tabs {
     position: fixed;
-    bottom: 12px;
+    bottom: 5vh;
     left: 12px;
     right: 12px;
     max-width: 420px; /* Ограничение максимальной ширины */
@@ -1625,12 +1632,12 @@ body {
 /* Mobile Responsive */
 @media (max-width: 480px) {
     .bottom-tabs {
-        bottom: 8px;
+        bottom: 5vh;
         left: 8px;
         right: 8px;
         max-width: calc(100% - 32px); /* было 16 */
         padding: var(--space-6) var(--space-2);
-        min-height: 60px;
+        min-height: 70px;
         border-radius: 30px; /* было 20 */
     }
     
