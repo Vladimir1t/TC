@@ -13,7 +13,7 @@ try { tg.expand(); } catch (e) {}
 initializeUserProfile();
 
 const API_URL = 'https://tcatalogbot.ru/api';
-//'http://localhost:8000'; // 'https://tcatalogbot.ru/api';
+//'http://localhost:8000';
 window.API_URL = API_URL; 
 
 const urlParams = new URLSearchParams(window.location.search);
