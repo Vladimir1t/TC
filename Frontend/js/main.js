@@ -12,9 +12,8 @@ try { tg.expand(); } catch (e) {}
 // initializeTelegramTheme();
 initializeUserProfile();
 
-const API_URL = 
+const API_URL = 'https://tcatalogbot.ru/api';
 //'http://localhost:8000';
-'https://tcatalogbot.ru/api';
 window.API_URL = API_URL; 
 
 const urlParams = new URLSearchParams(window.location.search);
