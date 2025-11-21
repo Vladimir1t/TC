@@ -75,6 +75,44 @@ async def initial_setup():
     """Первоначальная настройка при запуске приложения"""
     try:
         logger.info("🚀 Starting initial setup...")
+         # Создаём необходимые таблицы для рекомендаций
+        logger.info("🗄️ Creating recommendation tables...")
+        from database_connect import get_db_connection
+        conn = None
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            # Таблица для событий пользователей (клики, просмотры)
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS interactions (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user_id INTEGER NOT NULL,
+                    project_id INTEGER NOT NULL,
+                    event_type TEXT NOT NULL,
+                    ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (user_id) REFERENCES users(id),
+                      FOREIGN KEY (project_id) REFERENCES projects(id)
+                  )
+              ''')
+            cursor.execute('''
+                  CREATE INDEX IF NOT EXISTS idx_interactions_user
+                  ON interactions(user_id, ts DESC)
+              ''')
+            cursor.execute('''
+                  CREATE INDEX IF NOT EXISTS idx_interactions_project
+                  ON interactions(project_id, ts DESC)
+              ''')
+            cursor.execute('''
+                  CREATE INDEX IF NOT EXISTS idx_interactions_event
+                  ON interactions(event_type, ts DESC)
+              ''')
+            conn.commit()
+            logger.info("✅ Recommendation tables created")
+        except Exception as e:
+            logger.error(f"❌ Failed to create recommendation tables: {e}")
+        finally:
+            if conn:
+                conn.close()
         logger.info("🔄 Initial database shuffle...")
         database.shuffle_database('aggregator.db')
 
