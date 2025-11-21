@@ -2582,25 +2582,25 @@ body {
     border: 1px solid rgba(168, 85, 247, 0.25);
 }
 
-/* ==================== SURVEY STYLES - DARK GLASS THEME ==================== */
+/* ==================== SURVEY STYLES - FULLSCREEN MOBILE ==================== */
 
-/* Survey Overlay - Dark Glass Background */
+/* Survey Overlay - Fullscreen Mobile */
 .survey-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.9);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     z-index: 10001;
     display: flex;
-    align-items: center;
+    align-items: stretch; /* Растягиваем на весь экран */
     justify-content: center;
     animation: glassFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow-y: auto;
-    padding: var(--space-12);
+    overflow: hidden;
+    padding: 0;
 }
 
 @keyframes glassFadeIn {
@@ -2614,23 +2614,23 @@ body {
     }
 }
 
-/* Survey Container - COMPACT Liquid Glass Effect */
+/* Survey Container - Fullscreen Mobile */
 .survey-container {
     width: 100%;
-    max-width: 440px; /* Уменьшили ширину */
-    background: rgba(30, 30, 35, 0.7);
+    height: 100%;
+    max-width: none;
+    background: rgba(15, 15, 20, 0.95);
     backdrop-filter: blur(40px) saturate(200%);
     -webkit-backdrop-filter: blur(40px) saturate(200%);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 20px; /* Меньше радиус */
-    padding: var(--space-24); /* Меньше отступы */
-    box-shadow: 
-        0 20px 40px -12px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
     animation: glassSlideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Liquid Glass Shine Effect */
@@ -2643,50 +2643,34 @@ body {
     height: 1px;
     background: linear-gradient(90deg, 
         transparent 0%, 
-        rgba(255, 255, 255, 0.3) 50%, 
+        rgba(255, 255, 255, 0.2) 50%, 
         transparent 100%);
     z-index: 2;
-}
-
-.survey-container::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg,
-        transparent,
-        rgba(255, 255, 255, 0.1),
-        transparent);
-    transition: left 0.6s ease;
-    z-index: 1;
-}
-
-.survey-container:hover::after {
-    left: 100%;
 }
 
 @keyframes glassSlideUp {
     from {
         opacity: 0;
-        transform: translateY(40px) scale(0.95);
-        backdrop-filter: blur(0px) saturate(100%);
+        transform: translateY(20px);
     }
     to {
         opacity: 1;
-        transform: translateY(0) scale(1);
-        backdrop-filter: blur(40px) saturate(200%);
+        transform: translateY(0);
     }
 }
 
+/* Survey Screen - Fullscreen Layout */
 .survey-screen {
     display: none;
+    flex-direction: column;
+    height: 100%;
+    padding: var(--space-16);
     animation: screenFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
 }
 
 .survey-screen.active {
-    display: block;
+    display: flex;
 }
 
 @keyframes screenFadeIn {
@@ -2700,46 +2684,49 @@ body {
     }
 }
 
-/* Survey Header - COMPACT */
+/* Survey Header - Mobile Compact */
 .survey-header {
     text-align: center;
-    margin-bottom: var(--space-24); /* Меньше отступ */
+    margin-bottom: var(--space-20);
     display: flex;
     align-items: center;
-    gap: var(--space-12); /* Меньше расстояние */
+    gap: var(--space-12);
     position: relative;
     z-index: 3;
+    padding: var(--space-8) 0;
+    flex-shrink: 0;
 }
 
 .survey-header h2 {
-    font-size: var(--font-size-2xl); /* Уменьшили шрифт */
+    font-size: var(--font-size-2xl);
     font-weight: var(--font-weight-bold);
     color: rgba(255, 255, 255, 0.95);
-    margin-bottom: var(--space-6); /* Меньше отступ */
+    margin-bottom: var(--space-4);
     line-height: var(--line-height-tight);
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     background: linear-gradient(135deg, #fff 0%, #a0a0a0 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    flex: 1;
 }
 
 .survey-subtitle {
-    font-size: var(--font-size-base); /* Уменьшили шрифт */
+    font-size: var(--font-size-base);
     color: rgba(255, 255, 255, 0.7);
     margin: 0;
     font-weight: var(--font-weight-medium);
 }
 
-/* Back Button - COMPACT Glass Style */
+/* Back Button - Mobile */
 .survey-back-btn {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: var(--radius-full);
-    width: 40px; /* Уменьшили */
-    height: 40px; /* Уменьшили */
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2761,35 +2748,29 @@ body {
     transform: translateX(-2px) scale(0.98);
 }
 
-/* Survey Counter - COMPACT Glass Morphism */
+/* Survey Counter - Mobile */
 .survey-counter {
     text-align: center;
-    font-size: var(--font-size-lg); /* Уменьшили шрифт */
+    font-size: var(--font-size-lg);
     font-weight: var(--font-weight-bold);
     color: rgba(255, 255, 255, 0.9);
-    margin-bottom: var(--space-24); /* Меньше отступ */
-    padding: var(--space-16) var(--space-20); /* Меньше отступы */
+    margin-bottom: var(--space-20);
+    padding: var(--space-16) var(--space-20);
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 16px; /* Меньше радиус */
+    border-radius: 16px;
     box-shadow: 
         0 6px 24px rgba(0, 0, 0, 0.2),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.survey-counter:hover {
-    transform: translateY(-2px);
-    box-shadow: 
-        0 10px 32px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    flex-shrink: 0;
 }
 
 .survey-counter span {
     color: #3b82f6;
-    font-size: var(--font-size-2xl); /* Уменьшили */
+    font-size: var(--font-size-2xl);
     text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
     background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
     -webkit-background-clip: text;
@@ -2797,22 +2778,30 @@ body {
     background-clip: text;
 }
 
-/* Survey Chips - COMPACT АДАПТИВНЫЕ РАЗМЕРЫ */
+/* Survey Content - Scrollable Area */
+.survey-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-8) 0;
+    margin-bottom: var(--space-16);
+}
+
+/* Survey Chips - Mobile Grid */
 .survey-chips {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Уменьшили минимальную ширину */
-    gap: var(--space-12); /* Меньше расстояние */
-    margin-bottom: var(--space-24); /* Меньше отступ */
+    grid-template-columns: repeat(2, 1fr); /* Всегда 2 колонки на мобильных */
+    gap: var(--space-12);
+    margin-bottom: var(--space-20);
 }
 
 .survey-chip {
-    padding: var(--space-12) var(--space-16); /* Меньше отступы */
+    padding: var(--space-14) var(--space-12);
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 14px; /* Меньше радиус */
-    font-size: var(--font-size-base); /* Уменьшили шрифт */
+    border-radius: 14px;
+    font-size: var(--font-size-base);
     font-weight: var(--font-weight-semibold);
     color: rgba(255, 255, 255, 0.9);
     cursor: pointer;
@@ -2821,13 +2810,13 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-6); /* Меньше расстояние */
+    gap: var(--space-6);
     box-shadow: 
         0 4px 16px rgba(0, 0, 0, 0.2),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
     position: relative;
     overflow: hidden;
-    min-height: 70px; /* Уменьшили высоту */
+    min-height: 80px;
     text-align: center;
     justify-content: center;
     width: 100%;
@@ -2852,7 +2841,7 @@ body {
 }
 
 .survey-chip:hover {
-    transform: translateY(-3px) scale(1.02); /* Меньше подъем */
+    transform: translateY(-2px) scale(1.02);
     box-shadow: 
         0 6px 24px rgba(0, 0, 0, 0.3),
         0 0 0 1px rgba(59, 130, 246, 0.3),
@@ -2877,11 +2866,11 @@ body {
     transition: transform 0.1s ease;
 }
 
-/* Текст в чипсах - COMPACT */
+/* Текст в чипсах - Mobile */
 .survey-chip-text {
-    font-size: var(--font-size-sm); /* Уменьшили шрифт */
+    font-size: var(--font-size-sm);
     font-weight: var(--font-weight-semibold);
-    line-height: 1.2; /* Более плотный межстрочный */
+    line-height: 1.2;
     text-align: center;
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -2893,22 +2882,22 @@ body {
     overflow: hidden;
 }
 
-/* УВЕЛИЧЕННЫЕ ИКОНКИ (но компактные) */
+/* Иконки - Mobile */
 .survey-chip-icon {
-    font-size: 24px; /* Оптимальный размер */
+    font-size: 24px;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-    min-height: 28px; /* Меньше высота */
+    min-height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* Survey Sections - COMPACT */
+/* Survey Sections - Mobile */
 .survey-sections {
     display: flex;
     flex-direction: column;
-    gap: var(--space-20); /* Меньше расстояние */
-    margin-bottom: var(--space-24); /* Меньше отступ */
+    gap: var(--space-16);
+    margin-bottom: var(--space-20);
 }
 
 .survey-section {
@@ -2916,20 +2905,12 @@ body {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px; /* Меньше радиус */
-    padding: var(--space-20); /* Меньше отступы */
+    border-radius: 14px;
+    padding: var(--space-16);
     box-shadow: 
-        0 6px 24px rgba(0, 0, 0, 0.2),
+        0 4px 16px rgba(0, 0, 0, 0.2),
         inset 0 1px 0 rgba(255, 255, 255, 0.05);
     animation: sectionSlideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.survey-section:hover {
-    transform: translateY(-2px);
-    box-shadow: 
-        0 10px 32px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 @keyframes sectionSlideUp {
@@ -2944,46 +2925,63 @@ body {
 }
 
 .survey-section h3 {
-    font-size: var(--font-size-lg); /* Уменьшили шрифт */
+    font-size: var(--font-size-lg);
     font-weight: var(--font-weight-bold);
     color: rgba(255, 255, 255, 0.95);
-    margin-bottom: var(--space-16); /* Меньше отступ */
+    margin-bottom: var(--space-12);
     display: flex;
     align-items: center;
-    gap: var(--space-10); /* Меньше расстояние */
+    gap: var(--space-8);
 }
 
-/* Подтемы - COMPACT */
+/* Подтемы - Mobile */
 .survey-section-chips {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); /* Уменьшили ширину */
-    gap: var(--space-10); /* Меньше расстояние */
+    grid-template-columns: 1fr; /* Одна колонка для подтем */
+    gap: var(--space-8);
 }
 
-/* Чипсы подтем - COMPACT */
 .survey-section .survey-chip {
-    min-height: 55px; /* Уменьшили высоту */
-    padding: var(--space-10) var(--space-12); /* Меньше отступы */
+    min-height: 60px;
+    padding: var(--space-12) var(--space-10);
+    flex-direction: row; /* Горизонтальное расположение для подтем */
+    justify-content: flex-start;
+    text-align: left;
 }
 
 .survey-section .survey-chip-text {
-    font-size: var(--font-size-xs); /* Еще меньше шрифт */
-    -webkit-line-clamp: 2; /* Максимум 2 строки */
-    line-height: 1.1; /* Более плотный */
+    font-size: var(--font-size-sm);
+    -webkit-line-clamp: 1; /* Одна строка для подтем */
+    flex: 1;
 }
 
-/* Survey Actions - COMPACT Glass Buttons */
+.survey-section .survey-chip-icon {
+    font-size: 20px;
+    margin-right: var(--space-8);
+}
+
+/* Survey Actions - Mobile Bottom */
 .survey-actions {
     display: flex;
-    gap: var(--space-12); /* Меньше расстояние */
-    margin-top: var(--space-24); /* Меньше отступ */
+    gap: var(--space-12);
+    margin-top: auto; /* Прижимаем к низу */
+    padding: var(--space-16) 0 0 0;
+    flex-shrink: 0;
+    position: sticky;
+    bottom: 0;
+    background: rgba(15, 15, 20, 0.9);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 0 -16px;
+    padding: var(--space-16);
 }
 
 .survey-btn {
     flex: 1;
-    padding: var(--space-16) var(--space-24); /* Меньше отступы */
-    border-radius: 14px; /* Меньше радиус */
-    font-size: var(--font-size-base); /* Уменьшили шрифт */
+    padding: var(--space-16) var(--space-20);
+    border-radius: 14px;
+    font-size: var(--font-size-base);
     font-weight: var(--font-weight-bold);
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -2995,7 +2993,7 @@ body {
     overflow: hidden;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    min-height: 52px; /* Уменьшили высоту */
+    min-height: 52px;
 }
 
 .survey-btn::before {
@@ -3022,23 +3020,23 @@ body {
     transform: none !important;
 }
 
-/* Primary Button - COMPACT Liquid Blue */
+/* Primary Button - Mobile */
 .survey-btn-primary {
     background: linear-gradient(135deg, rgba(59, 130, 246, 0.8) 0%, rgba(37, 99, 235, 0.6) 100%);
     color: rgba(255, 255, 255, 0.95);
     border: 1px solid rgba(59, 130, 246, 0.4);
     box-shadow: 
-        0 6px 24px rgba(59, 130, 246, 0.3),
+        0 4px 16px rgba(59, 130, 246, 0.3),
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .survey-btn-primary:hover:not(:disabled) {
     background: linear-gradient(135deg, rgba(59, 130, 246, 0.9) 0%, rgba(37, 99, 235, 0.7) 100%);
-    transform: translateY(-2px) scale(1.02); /* Меньше подъем */
+    transform: translateY(-2px) scale(1.02);
     box-shadow: 
-        0 10px 32px rgba(59, 130, 246, 0.4),
-        0 0 16px rgba(59, 130, 246, 0.3),
+        0 6px 20px rgba(59, 130, 246, 0.4),
+        0 0 12px rgba(59, 130, 246, 0.3),
         inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
@@ -3047,13 +3045,13 @@ body {
     transition: transform 0.1s ease;
 }
 
-/* Secondary Button - COMPACT Glass */
+/* Secondary Button - Mobile */
 .survey-btn-secondary {
     background: rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 0.9);
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 
-        0 6px 24px rgba(0, 0, 0, 0.2),
+        0 4px 16px rgba(0, 0, 0, 0.2),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
@@ -3061,7 +3059,7 @@ body {
     background: rgba(255, 255, 255, 0.15);
     transform: translateY(-2px) scale(1.02);
     box-shadow: 
-        0 10px 32px rgba(0, 0, 0, 0.3),
+        0 6px 20px rgba(0, 0, 0, 0.3),
         inset 0 1px 0 rgba(255, 255, 255, 0.15);
     border-color: rgba(255, 255, 255, 0.3);
 }
@@ -3108,7 +3106,7 @@ body {
 /* Pulse animation for counter when limit reached */
 @keyframes pulseWarning {
     0% { transform: scale(1); }
-    50% { transform: scale(1.05); box-shadow: 0 6px 24px rgba(239, 68, 68, 0.4); }
+    50% { transform: scale(1.05); box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4); }
     100% { transform: scale(1); }
 }
 
@@ -3125,107 +3123,119 @@ body {
     background-clip: text;
 }
 
-/* Responsive design for survey */
-@media (max-width: 480px) {
+/* Tablet and Desktop Adaptations */
+@media (min-width: 768px) {
     .survey-overlay {
-        padding: var(--space-8);
+        padding: var(--space-16);
+        align-items: center;
     }
     
     .survey-container {
-        max-width: 92%; /* Почти вся ширина */
-        padding: var(--space-20);
-        border-radius: 18px;
+        width: 90%;
+        max-width: 500px;
+        height: auto;
+        max-height: 90vh;
+        border-radius: 20px;
+        box-shadow: 
+            0 25px 50px -12px rgba(0, 0, 0, 0.5),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.2);
     }
     
-    .survey-header h2 {
-        font-size: var(--font-size-xl);
+    .survey-screen {
+        padding: var(--space-24);
     }
     
-    /* Мобильные чипсы */
     .survey-chips {
-        grid-template-columns: repeat(2, 1fr);
-        gap: var(--space-10);
+        grid-template-columns: repeat(3, 1fr); /* 3 колонки на планшетах */
     }
     
-    .survey-chip {
-        min-height: 65px;
-        padding: var(--space-10) var(--space-12);
+    .survey-actions {
+        position: relative;
+        background: transparent;
+        border-top: none;
+        margin: 0;
+        padding: var(--space-16) 0 0 0;
+    }
+}
+
+/* Landscape Orientation */
+@media (max-width: 767px) and (orientation: landscape) {
+    .survey-container {
+        height: 100vh;
     }
     
-    .survey-chip-text {
-        font-size: var(--font-size-xs);
-        line-height: 1.1;
-    }
-    
-    .survey-chip-icon {
-        font-size: 22px;
-        min-height: 26px;
+    .survey-header {
+        padding: var(--space-4) 0;
+        margin-bottom: var(--space-12);
     }
     
     .survey-counter {
-        font-size: var(--font-size-base);
-        padding: var(--space-14) var(--space-16);
+        margin-bottom: var(--space-12);
+        padding: var(--space-12) var(--space-16);
     }
     
-    .survey-counter span {
-        font-size: var(--font-size-xl);
+    .survey-content {
+        padding: var(--space-4) 0;
+        margin-bottom: var(--space-12);
     }
     
-    .survey-btn {
-        padding: var(--space-14) var(--space-20);
-        font-size: var(--font-size-sm);
-        min-height: 48px;
+    .survey-chips {
+        grid-template-columns: repeat(3, 1fr); /* 3 колонки в ландшафте */
+        gap: var(--space-8);
     }
     
-    .survey-section {
-        padding: var(--space-16);
+    .survey-chip {
+        min-height: 70px;
+        padding: var(--space-10) var(--space-8);
+    }
+    
+    .survey-actions {
+        padding: var(--space-12);
+    }
+}
+
+/* Very small phones */
+@media (max-width: 360px) {
+    .survey-screen {
+        padding: var(--space-12);
+    }
+    
+    .survey-chips {
+        grid-template-columns: 1fr; /* 1 колонка на очень маленьких экранах */
+    }
+    
+    .survey-chip {
+        min-height: 70px;
     }
     
     .survey-actions {
         flex-direction: column;
-        gap: var(--space-10);
-    }
-    
-    /* Подтемы на мобильных */
-    .survey-section-chips {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Еще более мелкие экраны */
-@media (max-width: 360px) {
-    .survey-chips {
-        grid-template-columns: 1fr;
-    }
-    
-    .survey-chip {
-        min-height: 60px;
-    }
-}
-
-/* Mobile landscape orientation */
-@media (max-width: 480px) and (orientation: landscape) {
-    .survey-overlay {
-        padding: var(--space-6);
-    }
-    
-    .survey-container {
-        max-height: 85vh;
-        overflow-y: auto;
-        padding: var(--space-16);
-    }
-    
-    .survey-chips {
-        grid-template-columns: repeat(3, 1fr);
-        max-height: 180px;
-        overflow-y: auto;
-        gap: var(--space-8);
     }
 }
 
 /* Smooth scroll for survey */
 .survey-container {
     scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for webkit */
+.survey-content::-webkit-scrollbar {
+    width: 4px;
+}
+
+.survey-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+}
+
+.survey-content::-webkit-scrollbar-thumb {
+    background: rgba(59, 130, 246, 0.5);
+    border-radius: 2px;
+}
+
+.survey-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(59, 130, 246, 0.7);
 }
 
 /* Focus styles for accessibility */
