@@ -51,20 +51,6 @@ def stem_word(word: str) -> str:
 
     return word
 
-def normalize_and_stem(text: str) -> Set[str]:
-    """Нормализация текста со стеммингом"""
-    import re
-    words = re.findall(r'\b\w{2,}\b', text.lower())
-    stemmed_words = set()
-
-    for word in words:
-        stemmed_words.add(word)
-        stemmed = stem_word(word)
-        if stemmed != word and len(stemmed) >= 2:
-            stemmed_words.add(stemmed)
-
-    return stemmed_words
-
 def expand_query_with_synonyms(query: str) -> Set[str]:
     """Расширяет поисковый запрос синонимами с учетом стемминга"""
     import re

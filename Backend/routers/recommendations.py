@@ -21,10 +21,6 @@ class Event(BaseModel):
 class EventBatch(BaseModel):
     events: List[Event]
 
-class SearchLog(BaseModel):
-    user_id: int
-    query: str
-
 @router.post("/events")
 async def log_events(batch: EventBatch):
     """
@@ -72,33 +68,6 @@ async def log_events(batch: EventBatch):
         if conn:
             conn.rollback()
         raise HTTPException(status_code=500, detail=f"Ошибка логирования событий: {e}")
-    finally:
-        if conn:
-            conn.close()
-
-@router.post("/search_log")
-async def log_search(search_log: SearchLog):
-    """
-    Логирует поисковые запросы пользователей
-    """
-    conn = None
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        
-        cursor.execute('''
-            INSERT INTO search_logs (user_id, query, ts)
-            VALUES (?, ?, ?)
-        ''', (search_log.user_id, search_log.query, datetime.now().isoformat()))
-        
-        conn.commit()
-        
-        return {"status": "success"}
-        
-    except Exception as e:
-        if conn:
-            conn.rollback()
-        raise HTTPException(status_code=500, detail=f"Ошибка логирования поиска: {e}")
     finally:
         if conn:
             conn.close()
