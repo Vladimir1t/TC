@@ -102,12 +102,13 @@ async def get_survey_status(user_id: int):
         cursor = conn.cursor()
         cursor.execute("SELECT survey_completed, preferences FROM users WHERE id = ?", (user_id,))
         user = cursor.fetchone()
-        
+
         if not user:
             return {"survey_completed": False, "preferences": None}
-        
+
+        # Всегда возвращаем False, чтобы опрос показывался каждый раз
         return {
-            "survey_completed": bool(user["survey_completed"]) if user["survey_completed"] is not None else False,
+            "survey_completed": False,
             "preferences": user["preferences"]
         }
     finally:
