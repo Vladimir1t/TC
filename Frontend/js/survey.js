@@ -1,68 +1,4 @@
-// survey.js - Enhanced Logic for New Glass Design
-
-// Структура тем и подтем на основе предоставленного дерева
-const SURVEY_TOPICS = {
-    'IT и технологии': {
-        icon: '💻',
-        value: 'IT',
-        subTopics: ['Программирование', 'Нейросети и ИИ', 'DevOps/SRE', 'Кибербезопасность']
-    },
-    'Медиа и развлечения': {
-        icon: '🎬',
-        value: 'Медиа и развлечения',
-        subTopics: ['Фильмы и сериалы', 'Музыка', 'Игры', 'Аниме']
-    },
-    'Бизнес и финансы': {
-        icon: '💼',
-        value: 'Бизнес и финансы',
-        subTopics: ['Бизнес', 'Криптовалюты', 'Маркетинг', 'Инвестиции']
-    },
-    'Образование': {
-        icon: '📚',
-        value: 'Образование',
-        subTopics: ['Книги и литература', 'Наука', 'Познавательные']
-    },
-    'Лайфстайл': {
-        icon: '✨',
-        value: 'Лайфстайл',
-        subTopics: ['Психология', 'Красота и мода', 'Здоровье', 'Отношения']
-    },
-    'Путешествия': {
-        icon: '✈️',
-        value: 'Путешествия',
-        subTopics: []
-    },
-    'Спорт': {
-        icon: '⚽',
-        value: 'Спорт',
-        subTopics: []
-    },
-    'Авто/мото': {
-        icon: '🚗',
-        value: 'Авто и мото',
-        subTopics: []
-    },
-    'Наука/тех': {
-        icon: '🔬',
-        value: 'Наука и технологии',
-        subTopics: []
-    },
-    'Хобби/дом': {
-        icon: '🏡',
-        value: 'Хобби и дом',
-        subTopics: ['Искусство', 'Дизайн', 'Кулинария', 'Животные']
-    },
-    'Новости/политика': {
-        icon: '📰',
-        value: 'Новости',
-        subTopics: ['Политика', 'Региональные']
-    },
-    'Региональное': {
-        icon: '🌍',
-        value: 'Региональные',
-        subTopics: []
-    }
-};
+// survey.js - Enhanced version with beautiful animations
 
 class Survey {
     constructor() {
@@ -71,18 +7,6 @@ class Survey {
         this.maxMainTopics = 7;
         this.currentScreen = 1;
         this.totalScreens = 2;
-        
-        // DOM элементы
-        this.overlay = document.getElementById('surveyOverlay');
-        this.screen1 = document.getElementById('surveyScreen1');
-        this.screen2 = document.getElementById('surveyScreen2');
-        this.mainTopicsChips = document.getElementById('mainTopicsChips');
-        this.surveySubTopics = document.getElementById('surveySubTopics');
-        this.selectedCount = document.getElementById('selectedCount');
-        this.nextBtn = document.getElementById('surveyNextBtn');
-        this.skipBtn = document.getElementById('surveySkipBtn');
-        this.backBtn = document.getElementById('surveyBackBtn');
-        this.completeBtn = document.getElementById('surveyCompleteBtn');
         
         this.init();
     }
@@ -133,19 +57,18 @@ class Survey {
     
     toggleMainTopic(chip, topic) {
         if (chip.classList.contains('selected')) {
-            // Убираем выбор с анимацией
+            // Remove selection with animation
             this.animateChipDeselection(chip);
             const index = this.selectedMainTopics.indexOf(topic);
             if (index > -1) {
                 this.selectedMainTopics.splice(index, 1);
             }
         } else {
-            // Добавляем выбор если не достигнут лимит
+            // Add selection if not reached limit
             if (this.selectedMainTopics.length < this.maxMainTopics) {
                 this.animateChipSelection(chip);
                 this.selectedMainTopics.push(topic);
             } else {
-                // Показываем уведомление о лимите
                 this.showLimitNotification();
                 return;
             }
@@ -158,20 +81,40 @@ class Survey {
     animateChipSelection(chip) {
         chip.classList.add('selected');
         
-        // Ripple эффект
-        this.createRippleEffect(chip);
+        // Add ripple effect
+        const ripple = document.createElement('span');
+        ripple.style.cssText = `
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(var(--color-primary-rgb), 0.3);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        `;
         
-        // Микро-анимация иконки
-        const icon = chip.querySelector('.survey-chip-icon');
-        if (icon) {
-            icon.style.animation = 'iconBounce 0.6s ease';
-        }
+        const rect = chip.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = rect.width / 2;
+        const y = rect.height / 2;
+        
+        ripple.style.width = ripple.style.height = `${size}px`;
+        ripple.style.left = `${x - size / 2}px`;
+        ripple.style.top = `${y - size / 2}px`;
+        
+        chip.appendChild(ripple);
+        
+        // Remove ripple after animation
+        setTimeout(() => {
+            if (ripple.parentNode === chip) {
+                chip.removeChild(ripple);
+            }
+        }, 600);
     }
     
     animateChipDeselection(chip) {
         chip.classList.remove('selected');
         
-        // Анимация уменьшения
+        // Shrink animation
         chip.style.animation = 'none';
         setTimeout(() => {
             chip.style.animation = 'chipShrink 0.3s ease';
@@ -182,40 +125,10 @@ class Survey {
         }, 300);
     }
     
-    createRippleEffect(element) {
-        const ripple = document.createElement('span');
-        ripple.style.cssText = `
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(96, 165, 250, 0.3);
-            transform: scale(0);
-            animation: ripple 0.6s linear;
-            pointer-events: none;
-        `;
-        
-        const rect = element.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        const x = rect.width / 2;
-        const y = rect.height / 2;
-        
-        ripple.style.width = ripple.style.height = `${size}px`;
-        ripple.style.left = `${x - size / 2}px`;
-        ripple.style.top = `${y - size / 2}px`;
-        
-        element.appendChild(ripple);
-        
-        // Удаляем ripple после анимации
-        setTimeout(() => {
-            if (ripple.parentNode === element) {
-                element.removeChild(ripple);
-            }
-        }, 600);
-    }
-    
     updateCounter() {
         this.selectedCount.textContent = this.selectedMainTopics.length;
         
-        // Анимация обновления счетчика
+        // Animate counter update
         this.selectedCount.style.transform = 'scale(1.2)';
         setTimeout(() => {
             this.selectedCount.style.transform = 'scale(1)';
@@ -223,67 +136,54 @@ class Survey {
     }
     
     updateNextButton() {
-        // Кнопка всегда активна в новом дизайне
         this.nextBtn.disabled = false;
     }
     
     showLimitNotification() {
-        // Улучшенное уведомление с анимацией
+        // Enhanced notification with shake and color change
         this.selectedCount.style.animation = 'shake 0.5s ease, colorPulse 1s ease';
         
-        // Создаем плавающее уведомление
+        // Create floating notification
         const notification = document.createElement('div');
-        notification.className = 'survey-notification';
         notification.textContent = `Максимум ${this.maxMainTopics} тем`;
         notification.style.cssText = `
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(239, 68, 68, 0.9);
+            background: var(--color-error);
             color: white;
             padding: var(--space-12) var(--space-16);
-            border-radius: 12px;
+            border-radius: var(--radius-lg);
             z-index: 10002;
             animation: floatUp 0.5s ease forwards;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            font-weight: var(--font-weight-medium);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         `;
         
         document.body.appendChild(notification);
         
-        // Автоматическое скрытие уведомления
         setTimeout(() => {
             notification.style.animation = 'floatDown 0.3s ease forwards';
             setTimeout(() => {
-                if (notification.parentNode) {
-                    document.body.removeChild(notification);
-                }
+                document.body.removeChild(notification);
             }, 300);
         }, 2000);
         
-        // Сброс анимации счетчика
         setTimeout(() => {
             this.selectedCount.style.animation = '';
         }, 500);
     }
     
     goToScreen2() {
-        // Проверяем нужно ли показывать экран 2
         const topicsWithSubTopics = this.selectedMainTopics.filter(topic => {
             const topicData = Object.values(SURVEY_TOPICS).find(t => t.value === topic);
             return topicData && topicData.subTopics && topicData.subTopics.length > 0;
         });
         
-        // Показываем экран 2 только если есть темы с подтемами
-        // И ограничиваем максимум 3 темами для уточнения (самые широкие)
         if (topicsWithSubTopics.length > 0) {
-            // Берем только первые 3 темы с подтемами для уточнения
             const topicsToRefine = topicsWithSubTopics.slice(0, 3);
             
-            // Анимируем переход между экранами
+            // Animate screen transition
             this.animateScreenTransition(() => {
                 this.renderSubTopics(topicsToRefine);
                 this.screen1.classList.remove('active');
@@ -293,7 +193,6 @@ class Survey {
                 this.updateProgressBar();
             });
         } else {
-            // Пропускаем экран 2 и завершаем
             this.completeSurvey();
         }
     }
@@ -312,10 +211,8 @@ class Survey {
     renderSubTopics(topicsToShow = null) {
         this.surveySubTopics.innerHTML = '';
         
-        // Используем переданный список тем или все выбранные
         const topicsToRender = topicsToShow || this.selectedMainTopics;
         
-        // Отображаем только те темы, которые были выбраны и имеют подтемы
         topicsToRender.forEach((topic, sectionIndex) => {
             const topicEntry = Object.entries(SURVEY_TOPICS).find(([name, data]) => data.value === topic);
             
@@ -377,10 +274,10 @@ class Survey {
     }
     
     async completeSurvey() {
-        // Показываем состояние загрузки
-        this.showLoadingState();
+        // Show loading state
+        this.completeBtn.innerHTML = '<span class="survey-loading"></span> Сохраняем...';
+        this.completeBtn.disabled = true;
         
-        // Получаем ID пользователя из Telegram WebApp
         const userId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id ?? window.DEBUG_USER_ID;
         
         if (!userId) {
@@ -389,7 +286,6 @@ class Survey {
         }
         
         try {
-            // Отправляем данные на сервер
             const response = await fetch(`${window.API_URL}/users/${userId}/survey`, {
                 method: 'POST',
                 headers: {
@@ -408,46 +304,18 @@ class Survey {
                 this.hideWithAnimation();
             }
         } catch (error) {
-            console.error('Survey submission error:', error);
             this.hideWithAnimation();
         }
     }
     
-    showLoadingState() {
-        // Показываем индикатор загрузки на кнопке
-        const originalText = this.completeBtn.innerHTML;
-        this.completeBtn.innerHTML = `
-            <span class="survey-loading"></span>
-            <span>Сохраняем...</span>
-        `;
-        this.completeBtn.disabled = true;
-        
-        // Сохраняем оригинальный текст для восстановления
-        this.completeBtn.dataset.originalText = originalText;
-    }
-    
     showSuccessAnimation() {
-        // Анимация успешного завершения
+        // Add success checkmark animation
         this.completeBtn.innerHTML = '✓ Готово!';
-        this.completeBtn.style.background = 'rgba(34, 197, 94, 0.2)';
-        this.completeBtn.style.borderColor = 'rgba(34, 197, 94, 0.4)';
-        this.completeBtn.style.color = '#86efac';
+        this.completeBtn.style.background = 'var(--color-success)';
         
         setTimeout(() => {
             this.hideWithAnimation();
         }, 1000);
-    }
-    
-    restoreCompleteButton() {
-        // Восстанавливаем оригинальное состояние кнопки
-        if (this.completeBtn.dataset.originalText) {
-            this.completeBtn.innerHTML = this.completeBtn.dataset.originalText;
-            delete this.completeBtn.dataset.originalText;
-        }
-        this.completeBtn.disabled = false;
-        this.completeBtn.style.background = '';
-        this.completeBtn.style.borderColor = '';
-        this.completeBtn.style.color = '';
     }
     
     hideWithAnimation() {
@@ -455,9 +323,8 @@ class Survey {
         
         setTimeout(() => {
             this.hide();
-            this.restoreCompleteButton();
             
-            // Загружаем рекомендации если доступно
+            // Load recommendations if available
             if (typeof window.loadRecommendationsBasedOnPreferences === 'function') {
                 window.loadRecommendationsBasedOnPreferences();
             }
@@ -465,7 +332,6 @@ class Survey {
     }
     
     skip() {
-        // Пропускаем опрос, сохраняем пустые предпочтения
         this.selectedMainTopics = [];
         this.selectedSubTopics = [];
         this.completeSurvey();
@@ -512,7 +378,7 @@ class Survey {
     }
 }
 
-// Добавляем дополнительные CSS анимации
+// Add additional CSS animations
 const additionalStyles = document.createElement('style');
 additionalStyles.textContent = `
     @keyframes ripple {
@@ -528,8 +394,8 @@ additionalStyles.textContent = `
     }
     
     @keyframes colorPulse {
-        0%, 100% { color: #60a5fa; }
-        50% { color: #ef4444; }
+        0%, 100% { color: var(--color-primary); }
+        50% { color: var(--color-error); }
     }
     
     @keyframes floatUp {
@@ -579,48 +445,14 @@ additionalStyles.textContent = `
     @keyframes glassFadeOut {
         from {
             opacity: 1;
-            backdrop-filter: blur(24px) saturate(200%);
+            backdrop-filter: blur(20px) saturate(180%);
         }
         to {
             opacity: 0;
             backdrop-filter: blur(0px) saturate(100%);
         }
     }
-    
-    @keyframes iconBounce {
-        0%, 20%, 53%, 80%, 100% {
-            transform: scale(1.3);
-        }
-        40%, 43% {
-            transform: scale(1.4);
-        }
-        70% {
-            transform: scale(1.35);
-        }
-    }
-    
-    .survey-loading {
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        border: 2px solid transparent;
-        border-top: 2px solid currentColor;
-        border-radius: 50%;
-        animation: surveySpin 1s linear infinite;
-    }
-    
-    @keyframes surveySpin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    
-    @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-        20%, 40%, 60%, 80% { transform: translateX(5px); }
-    }
 `;
 document.head.appendChild(additionalStyles);
 
-// Экспортируем класс Survey для использования в main.js
 window.Survey = Survey;
