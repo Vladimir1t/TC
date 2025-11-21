@@ -285,18 +285,23 @@
 
     <button class="to-top-btn" id="toTopBtn">↑</button>
 
-    <!-- Опросник для новых пользователей -->
+    <!-- ОПРОСНИК ДЛЯ НОВЫХ ПОЛЬЗОВАТЕЛЕЙ - ОБНОВЛЕННЫЙ СТИЛЬ -->
     <div class="survey-overlay" id="surveyOverlay" style="display: none;">
         <div class="survey-container">
+            <!-- Прогресс-бар -->
+            <div class="survey-progress">
+                <div class="survey-progress-bar"></div>
+            </div>
+            
             <!-- Экран 1: Основные темы -->
             <div class="survey-screen active" id="surveyScreen1">
                 <div class="survey-header">
                     <h2>Выберите интересные темы</h2>
-                    <p class="survey-subtitle">Мы подберем для вас лучшие каналы</p>
+                    <p class="survey-subtitle">Мы подберем для вас лучшие каналы и боты</p>
                 </div>
                 
                 <div class="survey-counter">
-                    <span id="selectedCount">0</span>/7
+                    Выбрано: <span id="selectedCount">0</span> из 7
                 </div>
                 
                 <div class="survey-chips" id="mainTopicsChips">
@@ -305,7 +310,7 @@
                 
                 <div class="survey-actions">
                     <button class="survey-btn survey-btn-secondary" id="surveySkipBtn">Пропустить</button>
-                    <button class="survey-btn survey-btn-primary" id="surveyNextBtn" disabled>Готово</button>
+                    <button class="survey-btn survey-btn-primary" id="surveyNextBtn">Далее</button>
                 </div>
             </div>
             
@@ -319,7 +324,7 @@
                     </button>
                     <div>
                         <h2>Уточните интересы</h2>
-                        <p class="survey-subtitle">Выберите что вам интересно</p>
+                        <p class="survey-subtitle">Выберите конкретные направления</p>
                     </div>
                 </div>
                 
@@ -328,7 +333,7 @@
                 </div>
                 
                 <div class="survey-actions">
-                    <button class="survey-btn survey-btn-primary survey-btn-full" id="surveyCompleteBtn">Завершить</button>
+                    <button class="survey-btn survey-btn-primary survey-btn-full" id="surveyCompleteBtn">Завершить настройку</button>
                 </div>
             </div>
         </div>

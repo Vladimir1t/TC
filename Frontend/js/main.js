@@ -1198,7 +1198,7 @@ function handleSettingsClick(settingType) {
             break;
         case 'support':
             if (tg.openTelegramLink) {
-                tg.openTelegramLink('https://t.me/support_bot');
+                tg.openTelegramLink('https://t.me/TCatalog_news');
             }
             break;
         case 'faq':
