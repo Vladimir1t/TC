@@ -7,7 +7,7 @@ import asyncio
 from contextlib import asynccontextmanager
 from scripts import database
 
-from routers import projects, users, debug
+from routers import projects, users, debug, recommendations
 from bot import run_bot
 
 logging.basicConfig(level=logging.INFO)
@@ -74,13 +74,25 @@ async def periodic_shuffle():
 async def initial_setup():
     """Первоначальная настройка при запуске приложения"""
     try:
-        logger.info("--- Starting initial setup ---")
-        # logger.info("🔄 Initial database shuffle...")
-        # database.shuffle_database('aggregator.db')
-        
+        logger.info("🚀 Starting initial setup...")
+        logger.info("🔄 Initial database shuffle...")
+        database.shuffle_database('aggregator.db')
+
         await refresh_search_index()
-        logger.info("Initial setup completed successfully")
-        
+
+        # Инициализируем кэши в recommendation_engine
+        logger.info("🔗 Initializing recommendation engine caches...")
+        import recommendation_engine
+        from routers.projects import search_index, project_data_cache
+        recommendation_engine.initialize_caches(search_index, project_data_cache)
+
+        # Строим инвертированный индекс для рекомендаций
+        logger.info("🔨 Building inverted index for recommendations...")
+        recommendation_engine.build_inverted_index()
+
+        logger.info("✅ Initial setup completed successfully")
+
+
     except Exception as e:
         logger.error(f"❌ Error during initial setup: {e}")
         raise
@@ -121,6 +133,7 @@ async def health_check():
 app.include_router(projects.router, tags=["Projects"]) # тут поменять для сервака prefix="/api"
 app.include_router(users.router, tags=["Users"])       # тут поменять для сервака prefix="/api"
 app.include_router(debug.router, tags=["Debug"])       # тут поменять для сервака prefix="/api"
+app.include_router(recommendations.router, tags=["Recommendations"])
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

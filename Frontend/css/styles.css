@@ -1282,6 +1282,33 @@ body {
     padding: 0;
 }
 
+/* Recommendation Reason */
+.recommendation-reason {
+    font-size: var(--font-size-sm);
+    color: var(--color-primary);
+    background: rgba(var(--color-teal-500-rgb), 0.1);
+    padding: var(--space-6) var(--space-10);
+    border-radius: var(--radius-base);
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-8);
+    font-style: italic;
+    border-left: 3px solid var(--color-primary);
+}
+
+/* Recommendations Type Section */
+.recommendations-type-section {
+    margin-bottom: var(--space-32);
+}
+
+.recommendations-type-section h4 {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    margin-bottom: var(--space-16);
+    padding-left: var(--space-8);
+    border-left: 3px solid var(--color-primary);
+}
+
 /* Settings Section */
 .settings-section {
     margin-bottom: var(--space-32);
@@ -2500,4 +2527,57 @@ body {
     .survey-section {
         padding: var(--space-16);
     }
+}
+
+/* Type badges для ботов и мини-приложений */
+.type-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    padding: var(--space-2) var(--space-8);
+    border-radius: var(--radius-full);
+    margin-left: var(--space-6);
+    vertical-align: middle;
+    line-height: 1;
+    white-space: nowrap;
+    transition: var(--transition);
+}
+
+.type-badge-bot {
+    background: rgba(59, 130, 246, 0.12);
+    color: rgb(59, 130, 246);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.type-badge-app {
+    background: rgba(147, 51, 234, 0.12);
+    color: rgb(147, 51, 234);
+    border: 1px solid rgba(147, 51, 234, 0.2);
+}
+
+@media (prefers-color-scheme: dark) {
+    .type-badge-bot {
+        background: rgba(96, 165, 250, 0.15);
+        color: rgb(147, 197, 253);
+        border: 1px solid rgba(96, 165, 250, 0.25);
+    }
+
+    .type-badge-app {
+        background: rgba(168, 85, 247, 0.15);
+        color: rgb(192, 132, 252);
+        border: 1px solid rgba(168, 85, 247, 0.25);
+    }
+}
+
+[data-color-scheme="dark"] .type-badge-bot {
+    background: rgba(96, 165, 250, 0.15);
+    color: rgb(147, 197, 253);
+    border: 1px solid rgba(96, 165, 250, 0.25);
+}
+
+[data-color-scheme="dark"] .type-badge-app {
+    background: rgba(168, 85, 247, 0.15);
+    color: rgb(192, 132, 252);
+    border: 1px solid rgba(168, 85, 247, 0.25);
 }
