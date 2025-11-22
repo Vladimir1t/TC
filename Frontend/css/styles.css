@@ -1638,7 +1638,7 @@ body {
 /* Mobile Responsive */
 @media (max-width: 480px) {
     .bottom-tabs {
-        bottom: 30px; /* Поднял выше было 8px */
+        bottom: 16px; /* Поднял выше было 8px */
         left: 12px; /* Увеличил отступы */
         right: 12px;
         max-width: calc(100% - 40px); /* Увеличил ширину было 32px */
@@ -2175,6 +2175,7 @@ body {
     }
     
     .bottom-tab {
+        bottom: 6px;
         height: 48px;
         padding: var(--space-6);
     }
