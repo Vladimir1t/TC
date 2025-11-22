@@ -857,8 +857,21 @@ body {
     align-items: center;
     margin-bottom: var(--space-20);
     gap: var(--space-12);
-    position: relative;
+    position: sticky; /* Изменено с relative на sticky */
+    top: 0; /* Прилипает к верху */
+    z-index: 999; /* Высокий z-index чтобы был поверх контента */
+    background: var(--color-bg); /* Фон чтобы контент не просвечивал */
+    padding: var(--space-16) 0; /* Добавил паддинг сверху и снизу */
     animation: slideInFromTop 0.5s var(--ease-standard);
+    backdrop-filter: blur(10px); /* Размытие фона для красоты */
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Для темной темы добавим полупрозрачность */
+@media (prefers-color-scheme: dark) {
+    .search-container {
+        background: rgba(var(--color-bg-rgb), 0.9); /* Полупрозрачный фон */
+    }
 }
 
 @keyframes slideInFromTop {
@@ -1450,32 +1463,32 @@ body {
 /* Bottom Tabs Container with Liquid Glass */
 .bottom-tabs {
     position: fixed;
-    bottom: 12px;
-    left: 12px;
-    right: 12px;
-    max-width: 420px; /* Ограничение максимальной ширины */
-    width: calc(100% - 80px); /* Больше отступов от краёв */
+    bottom: 20px; /* Поднял выше было 12px */
+    left: 16px; /* Увеличил отступы */
+    right: 16px;
+    max-width: 480px; /* Увеличил максимальную ширину было 420px */
+    width: calc(100% - 64px); /* Увеличил ширину */
     margin: 0 auto;
     display: flex;
     justify-content: space-around;
     align-items: center;
     
     /* Liquid Glass Foundation - Increased Transparency */
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 45px; /* было 24 */
+    background: rgba(255, 255, 255, 0.12); /* Увеличил прозрачность */
+    backdrop-filter: blur(25px) saturate(200%); /* Усилил размытие */
+    -webkit-backdrop-filter: blur(25px) saturate(200%);
+    border: 1.5px solid rgba(255, 255, 255, 0.6); /* Увеличил границу */
+    border-radius: 50px; /* Увеличил скругление было 45px */
     
     /* Glass Depth */
     box-shadow: 
-        0 4px 16px rgba(0, 0, 0, 0.12),
-        inset 0 2px 8px rgba(255, 255, 255, 0.4);
+        0 6px 24px rgba(0, 0, 0, 0.15), /* Увеличил тень */
+        inset 0 3px 12px rgba(255, 255, 255, 0.5); /* Увеличил внутреннюю тень */
     
     box-sizing: border-box;
     z-index: 1000;
-    min-height: 68px;
-    padding: var(--space-8) var(--space-4);
+    min-height: 76px; /* Увеличил высоту было 68px */
+    padding: var(--space-10) var(--space-6); /* Увеличил паддинг */
     
     /* Smooth transitions */
     transition: all var(--duration-normal) var(--ease-standard);
@@ -1489,57 +1502,57 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 45px; /* было 24 */
-    backdrop-filter: blur(1px);
-    -webkit-backdrop-filter: blur(1px);
+    background: rgba(255, 255, 255, 0.08); /* Увеличил блеск */
+    border-radius: 50px; /* Увеличил скругление было 45px */
+    backdrop-filter: blur(2px); /* Увеличил размытие */
+    -webkit-backpack-filter: blur(2px);
     box-shadow: 
-        inset -10px -8px 0px -11px rgba(255, 255, 255, 0.8),
-        inset 0px -9px 0px -8px rgba(255, 255, 255, 0.7);
-    opacity: 0.5;
+        inset -12px -10px 0px -13px rgba(255, 255, 255, 0.9), /* Увеличил эффект */
+        inset 0px -12px 0px -10px rgba(255, 255, 255, 0.8); /* Увеличил эффект */
+    opacity: 0.6; /* Увеличил непрозрачность */
     z-index: -1;
-    filter: blur(1px) brightness(115%);
+    filter: blur(1.5px) brightness(120%); /* Увеличил яркость */
     pointer-events: none;
 }
 
 /* Dark Mode Adjustments */
 @media (prefers-color-scheme: dark) {
     .bottom-tabs {
-        background: rgba(30, 30, 30, 0.15);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(30, 30, 30, 0.2); /* Увеличил прозрачность */
+        border: 1.5px solid rgba(255, 255, 255, 0.15); /* Увеличил границу */
         box-shadow: 
-            0 8px 32px rgba(0, 0, 0, 0.3),
-            inset 0 4px 20px rgba(255, 255, 255, 0.05);
+            0 10px 40px rgba(0, 0, 0, 0.4), /* Увеличил тень */
+            inset 0 6px 24px rgba(255, 255, 255, 0.08); /* Увеличил внутреннюю тень */
     }
     
     .bottom-tabs::after {
-        background: rgba(255, 255, 255, 0.03);
+        background: rgba(255, 255, 255, 0.05); /* Увеличил блеск */
         box-shadow: 
-            inset -10px -8px 0px -11px rgba(255, 255, 255, 0.2),
-            inset 0px -9px 0px -8px rgba(255, 255, 255, 0.15);
-        opacity: 0.3;
+            inset -12px -10px 0px -13px rgba(255, 255, 255, 0.25), /* Увеличил эффект */
+            inset 0px -12px 0px -10px rgba(255, 255, 255, 0.2); /* Увеличил эффект */
+        opacity: 0.4; /* Увеличил непрозрачность */
     }
 }
 
 /* Tab Items */
 .bottom-tab {
     flex: 1;
-    height: 56px;
+    height: 64px; /* Увеличил высоту было 56px */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: var(--space-4);
+    gap: var(--space-5); /* Увеличил отступ */
     cursor: pointer;
     color: var(--color-text);
-    border-radius: 30px;
+    border-radius: 35px; /* Увеличил скругление было 30px */
     background-color: transparent;
     transition: all var(--duration-normal) var(--ease-standard);
     margin: 0;
     user-select: none;
     text-align: center;
     position: relative;
-    padding: var(--space-8);
+    padding: var(--space-10) var(--space-8); /* Увеличил паддинг */
     z-index: 2;
 }
 
@@ -1547,22 +1560,18 @@ body {
 .bottom-tabs::before {
     content: '';
     position: absolute;
-    height: 56px;
-    width: calc(33.333% - 8px);
-    /* background: rgba(255, 255, 255, 0.35); */ 
-    background: rgba(59, 130, 246, 0.2); 
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 30px; /* было 16 */
-    /* box-shadow: 
-        0 4px 16px rgba(33, 128, 141, 0.25),
-        inset 0 2px 8px rgba(255, 255, 255, 0.4); */
-      box-shadow: 
-        0 4px 16px rgba(0, 0, 0, 0.08),
-        inset 0 2px 8px rgba(255, 255, 255, 0.4);
+    height: 64px; /* Увеличил высоту было 56px */
+    width: calc(33.333% - 12px); /* Увеличил ширину было 8px */
+    background: rgba(59, 130, 246, 0.25); /* Увеличил прозрачность было 0.2 */
+    backdrop-filter: blur(12px); /* Увеличил размытие */
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 35px; /* Увеличил скругление было 30px */
+    box-shadow: 
+        0 6px 20px rgba(0, 0, 0, 0.12), /* Увеличил тень */
+        inset 0 3px 10px rgba(255, 255, 255, 0.5); /* Увеличил внутреннюю тень */
     transition: transform 0.4s var(--ease-standard);
     z-index: 1;
-    left: var(--space-8);
+    left: var(--space-10); /* Увеличил отступ было 8px */
     top: 50%;
     transform: translateY(-50%);
 }
@@ -1570,13 +1579,10 @@ body {
 /* Dark mode indicator */
 @media (prefers-color-scheme: dark) {
     .bottom-tabs::before {
-        background: rgba(59, 130, 246, 0.2);  /* Синий вместо teal */
-       /* box-shadow: 
-            0 4px 16px rgba(59, 130, 246, 0.35),
-            inset 0 2px 8px rgba(255, 255, 255, 0.15); */
-          box-shadow: 
-            0 4px 16px rgba(0, 0, 0, 0.5),
-            inset 0 2px 8px rgba(255, 255, 255, 0.15);
+        background: rgba(59, 130, 246, 0.3); /* Увеличил прозрачность было 0.2 */
+        box-shadow: 
+            0 6px 20px rgba(0, 0, 0, 0.6), /* Увеличил тень */
+            inset 0 3px 10px rgba(255, 255, 255, 0.2); /* Увеличил внутреннюю тень */
     }
 }
 
@@ -1586,11 +1592,11 @@ body {
 }
 
 .bottom-tabs[data-active-tab="1"]::before {
-    transform: translate(calc(100% + 4px), -50%);
+    transform: translate(calc(100% + 6px), -50%); /* Увеличил отступ было 4px */
 }
 
 .bottom-tabs[data-active-tab="2"]::before {
-    transform: translate(calc(200% + 8px), -50%);
+    transform: translate(calc(200% + 12px), -50%); /* Увеличил отступ было 8px */
 }
 
 /* Active Tab - No background, just color change */
@@ -1601,55 +1607,55 @@ body {
 /* Hover Effect */
 .bottom-tab:hover:not(.active) {
     color: var(--color-primary);
-    transform: scale(1.05);
+    transform: scale(1.08); /* Увеличил масштаб было 1.05 */
 }
 
 /* Active Press */
 .bottom-tab:active {
-    transform: scale(0.96);
+    transform: scale(0.94); /* Увеличил масштаб было 0.96 */
 }
 
 /* Icon Styles */
 .tab-icon-container {
     position: relative;
-    width: var(--space-24);
-    height: var(--space-24);
+    width: var(--space-28); /* Увеличил размер было 24px */
+    height: var(--space-28);
 }
 
 .tab-icon {
-    width: var(--space-24);
-    height: var(--space-24);
+    width: var(--space-28); /* Увеличил размер было 24px */
+    height: var(--space-28);
     transition: all var(--duration-normal) var(--ease-standard);
 }
 
 .bottom-tab span {
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-medium);
-    line-height: 1;
+    font-size: var(--font-size-sm); /* Увеличил шрифт было xs */
+    font-weight: var(--font-weight-semibold); /* Увеличил жирность было medium */
+    line-height: 1.1;
     transition: all var(--duration-normal) var(--ease-standard);
 }
 
 /* Mobile Responsive */
 @media (max-width: 480px) {
     .bottom-tabs {
-        bottom: 8px;
-        left: 8px;
-        right: 8px;
-        max-width: calc(100% - 32px); /* было 16 */
-        padding: var(--space-6) var(--space-2);
-        min-height: 60px;
-        border-radius: 30px; /* было 20 */
+        bottom: 16px; /* Поднял выше было 8px */
+        left: 12px; /* Увеличил отступы */
+        right: 12px;
+        max-width: calc(100% - 40px); /* Увеличил ширину было 32px */
+        padding: var(--space-8) var(--space-4); /* Увеличил паддинг */
+        min-height: 68px; /* Увеличил высоту было 60px */
+        border-radius: 40px; /* Увеличил скругление было 30px */
     }
     
     .bottom-tabs::after {
-        border-radius: 30px; /* было 20 */
+        border-radius: 40px; /* Увеличил скругление было 30px */
     }
     
     .bottom-tabs::before {
-        height: 48px;
-        left: var(--space-6);
-        width: calc(33.333% - 5px);
-        border-radius: 30px; /*не было вообще */
+        height: 56px; /* Увеличил высоту было 48px */
+        left: var(--space-8); /* Увеличил отступ было 6px */
+        width: calc(33.333% - 8px); /* Увеличил ширину было 5px */
+        border-radius: 35px; /* Увеличил скругление было 30px */
     }
     
     .bottom-tabs[data-active-tab="0"]::before {
@@ -1657,28 +1663,28 @@ body {
     }
 
     .bottom-tabs[data-active-tab="1"]::before {
-        transform: translate(calc(100% + 2px), -50%);
+        transform: translate(calc(100% + 4px), -50%); /* Увеличил отступ было 2px */
     }
 
     .bottom-tabs[data-active-tab="2"]::before {
-        transform: translate(calc(200% + 4px), -50%);
+        transform: translate(calc(200% + 8px), -50%); /* Увеличил отступ было 4px */
     }
     
     .bottom-tab {
-        height: 48px;
-        gap: var(--space-2);
-        padding: var(--space-6);
-        border-radius: 12px;
+        height: 56px; /* Увеличил высоту было 48px */
+        gap: var(--space-3); /* Увеличил отступ было 2px */
+        padding: var(--space-8) var(--space-6); /* Увеличил паддинг */
+        border-radius: 16px; /* Увеличил скругление было 12px */
     }
     
     .tab-icon-container,
     .tab-icon {
-        width: var(--space-20);
-        height: var(--space-20);
+        width: var(--space-24); /* Увеличил размер было 20px */
+        height: var(--space-24);
     }
     
     .bottom-tab span {
-        font-size: 10px;
+        font-size: 11px; /* Увеличил шрифт было 10px */
     }
 }
 
@@ -1697,7 +1703,6 @@ body {
 
 @keyframes spin {
     from { transform: rotate(0deg) scale(1); }
-    /*50% { transform: rotate(180deg) scale(1.1); }*/
     to { transform: rotate(360deg) scale(1); }
 }
 
