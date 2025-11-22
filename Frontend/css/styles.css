@@ -2175,7 +2175,6 @@ body {
     }
     
     .bottom-tab {
-        bottom: 6px;
         height: 48px;
         padding: var(--space-6);
     }

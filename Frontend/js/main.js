@@ -12,8 +12,9 @@ try { tg.expand(); } catch (e) {}
 // initializeTelegramTheme();
 initializeUserProfile();
 
-const API_URL = 'https://tcatalogbot.ru/api';
-//'http://localhost:8000'; // 'https://tcatalogbot.ru/api';
+const API_URL = 
+'https://tcatalogbot.ru/api';
+// 'http://localhost:8000'; 
 window.API_URL = API_URL; 
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -835,9 +836,9 @@ function createProjectCard(project, showReason = false) {
 // Получение заголовка для типа контента
 function getTypeHeaderText(type) {
     const headers = {
-        'channel': '<h4>📺 Каналы</h4>',
-        'bot': '<h4>🤖 Боты</h4>',
-        'mini_app': '<h4>📱 Мини-приложения</h4>'
+        'channel':  '<h4>Каналы</h4>',
+        'bot':      '<h4>Боты</h4>',
+        'mini_app': '<h4>Мини-приложения</h4>'
     };
     return headers[type] || '';
 }
