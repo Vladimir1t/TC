@@ -1215,10 +1215,13 @@ function handleSettingsClick(settingType) {
             }
             break;
         case 'theme':
+            if (tg.showAlert) {
+                tg.showAlert('Тема такая же, как и в настройках Telegram');
+            }
             break;
         case 'support':
             if (tg.openTelegramLink) {
-                tg.openTelegramLink('https://t.me/TCatalog_news');
+                tg.openTelegramLink('https://t.me/TCatalog_tgBot');
             }
             break;
         case 'faq':
@@ -1227,6 +1230,9 @@ function handleSettingsClick(settingType) {
             }
             break;
         case 'privacy':
+            if (tg.openTelegramLink) {
+                tg.openTelegramLink('https://t.me/TCatalog_news');
+            }
             break;
     }
 }
