@@ -1203,9 +1203,8 @@ function createFilterCategories() {
 function initializeFilter() {
     createFilterCategories();
 }
-// Функция для показа FAQ
-function showFAQ() {
-    const faqMessage = `❓ ПОМОЩЬ ПО ПРИЛОЖЕНИЮ TCATALOG
+
+const faqMessage = `❓ ПОМОЩЬ ПО ПРИЛОЖЕНИЮ TCATALOG
 
 📱 ОСНОВНАЯ ИНФОРМАЦИЯ
 
@@ -1306,20 +1305,6 @@ function showFAQ() {
 
 Наслаждайтесь использованием TCatalog! 🚀`;
 
-    if (tg.showAlert) {
-        tg.showAlert(faqMessage);
-    } else if (tg.showPopup) {
-        tg.showPopup({
-            title: '❓ Помощь по приложению',
-            message: faqMessage,
-            buttons: [{ type: 'ok' }]
-        });
-    } else {
-        // Fallback для браузера
-        alert(faqMessage);
-    }
-}
-
 // Обработка клика на настройки
 function handleSettingsClick(settingType) {
     console.log(`Clicked on setting: ${settingType}`);
@@ -1341,7 +1326,9 @@ function handleSettingsClick(settingType) {
             }
             break;
         case 'faq':
-            showFAQ();
+            if (tg.openTelegramLink) {
+                tg.showAlert(faqMessage);
+            }
             break;
         case 'privacy':
             if (tg.openTelegramLink) {
