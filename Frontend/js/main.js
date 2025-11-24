@@ -1203,37 +1203,6 @@ function createFilterCategories() {
 function initializeFilter() {
     createFilterCategories();
 }
-
-// Обработка клика на настройки
-function handleSettingsClick(settingType) {
-    console.log(`Clicked on setting: ${settingType}`);
-    
-    switch (settingType) {
-        case 'notifications':
-            if (tg.openTelegramLink) {
-                tg.openTelegramLink('https://t.me/TCatalog_tgBot');
-            }
-            break;
-        case 'theme':
-            if (tg.showAlert) {
-                tg.showAlert('Тема такая же, как и в настройках Telegram');
-            }
-            break;
-        case 'support':
-            if (tg.openTelegramLink) {
-                tg.openTelegramLink('https://t.me/TCatalog_tgBot');
-            }
-            break;
-        case 'faq':
-            showFAQ();
-            break;
-        case 'privacy':
-            if (tg.openTelegramLink) {
-                tg.openTelegramLink('https://t.me/TCatalog_news');
-            }
-            break;
-    }
-}
 // Функция для показа FAQ
 function showFAQ() {
     const faqMessage = `❓ ПОМОЩЬ ПО ПРИЛОЖЕНИЮ TCATALOG
@@ -1348,6 +1317,37 @@ function showFAQ() {
     } else {
         // Fallback для браузера
         alert(faqMessage);
+    }
+}
+
+// Обработка клика на настройки
+function handleSettingsClick(settingType) {
+    console.log(`Clicked on setting: ${settingType}`);
+    
+    switch (settingType) {
+        case 'notifications':
+            if (tg.openTelegramLink) {
+                tg.openTelegramLink('https://t.me/TCatalog_tgBot');
+            }
+            break;
+        case 'theme':
+            if (tg.showAlert) {
+                tg.showAlert('Тема такая же, как и в настройках Telegram');
+            }
+            break;
+        case 'support':
+            if (tg.openTelegramLink) {
+                tg.openTelegramLink('https://t.me/TCatalog_tgBot');
+            }
+            break;
+        case 'faq':
+            showFAQ();
+            break;
+        case 'privacy':
+            if (tg.openTelegramLink) {
+                tg.openTelegramLink('https://t.me/TCatalog_news');
+            }
+            break;
     }
 }
 
