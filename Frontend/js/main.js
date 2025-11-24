@@ -1318,6 +1318,8 @@ function handleSettingsClick(settingType) {
         case 'theme':
             if (tg.showAlert) {
                 tg.showAlert('Тема такая же, как и в настройках Telegram');
+            } else {
+                alert('Тема такая же, как и в настройках Telegram');
             }
             break;
         case 'support':
@@ -1326,8 +1328,10 @@ function handleSettingsClick(settingType) {
             }
             break;
         case 'faq':
-            if (tg.openTelegramLink) {
+            if (tg.showAlert) {
                 tg.showAlert(faqMessage);
+            } else {
+                alert(faqMessage);
             }
             break;
         case 'privacy':
