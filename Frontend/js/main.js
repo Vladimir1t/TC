@@ -1374,7 +1374,7 @@ function showCustomFAQModal() {
     modalContent.innerHTML = `
         <div style="margin-bottom: 20px;">
             <h3 style="margin: 0 0 16px 0; color: var(--tg-theme-text-color, #000000); text-align: center; font-size: 18px;">
-                ❓ Помощь по приложению TCatalog
+                Помощь по приложению TCatalog
             </h3>
             <div style="color: var(--tg-theme-text-color, #000000); max-height: 60vh; overflow-y: auto; padding-right: 8px;">
                 <div style="margin-bottom: 16px;">
