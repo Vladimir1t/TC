@@ -13,8 +13,8 @@ try { tg.expand(); } catch (e) {}
 initializeUserProfile();
 
 const API_URL = 
-'https://tcatalogbot.ru/api';
-// 'http://localhost:8000'; 
+// 'https://tcatalogbot.ru/api';
+'http://localhost:8000'; 
 window.API_URL = API_URL; 
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -922,6 +922,9 @@ function switchTab(tabName) {
     if (tabName === 'search') {
         showMainTab();
         loadContentSections();
+        if (searchInput) {
+            searchInput.value = '';
+        }
         // loadCategories(); // Закомментировано - категории убраны
     } else if (tabName === 'recommendations') {
         loadRecommendations();
@@ -1023,11 +1026,10 @@ function handleFilterClose() {
 }
 
 // Сброс фильтров
+// Сброс фильтров
 function handleFilterReset() {
     currentFilter = 'все';
-    if (!isInCategoryPage) {
-        currentContentType = 'all';
-    }
+    currentContentType = 'all';
     currentSortBy = 'subscribers';
     currentSubcategory = null;
 
@@ -1037,15 +1039,14 @@ function handleFilterReset() {
     categoryPage = 0;
     categoryHasMore = true;
     
-    // Сбрасываем UI
-    if (!isInCategoryPage) {
-        const contentTypeAll = document.querySelector('input[name="contentType"][value="all"]');
-        if (contentTypeAll) contentTypeAll.checked = true;
-    }
+    // Сбрасываем UI фильтров
+    const contentTypeAll = document.querySelector('input[name="contentType"][value="all"]');
+    if (contentTypeAll) contentTypeAll.checked = true;
+    
     const sortBySubscribers = document.querySelector('input[name="sortBy"][value="subscribers"]');
     if (sortBySubscribers) sortBySubscribers.checked = true;
     
-    // Сбрасываем категории
+    // Сбрасываем категории в фильтре
     document.querySelectorAll('.filter-category-item').forEach(item => {
         item.classList.remove('selected', 'expanded');
     });
@@ -1054,6 +1055,23 @@ function handleFilterReset() {
     });
     const allCategory = document.querySelector('.filter-category-item[data-category="все"]');
     if (allCategory) allCategory.classList.add('selected');
+
+    // Закрываем модал фильтров
+    handleFilterClose();
+    
+    // Возвращаем на начальную страницу поиска
+    if (isInCategoryPage) {
+        goBackToSearch();
+    }
+    
+    // Показываем главную вкладку с дефолтным контентом
+    showMainTab();
+    loadContentSections();
+    
+    // Очищаем поле поиска
+    if (searchInput) {
+        searchInput.value = '';
+    }
 }
 
 function handleFilterApply() {
@@ -1192,10 +1210,11 @@ function handleSettingsClick(settingType) {
     
     switch (settingType) {
         case 'notifications':
+            if (tg.openTelegramLink) {
+                tg.openTelegramLink('https://t.me/TCatalog_tgBot');
+            }
             break;
         case 'theme':
-            break;
-        case 'language':
             break;
         case 'support':
             if (tg.openTelegramLink) {
@@ -1203,6 +1222,9 @@ function handleSettingsClick(settingType) {
             }
             break;
         case 'faq':
+            if (tg.openTelegramLink) {
+                tg.openTelegramLink('https://t.me/TCatalog_news');
+            }
             break;
         case 'privacy':
             break;
