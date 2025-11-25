@@ -3246,33 +3246,83 @@ body {
     outline: 2px solid rgba(59, 130, 246, 0.6);
     outline-offset: 1px;
 }
-/* Subscribers Badge - стиль жидкое стекло для темного фона */
+/* Subscribers Badge - стиль жидкое стекло */
 .subscribers-mini {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     margin-top: var(--space-8);
 }
+
 .subscribers-badge {
     display: inline-flex;
     align-items: center;
     gap: var(--space-8);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-semibold);
-    color: rgba(255, 255, 255, 0.9);
-    background: rgba(35, 35, 40, 0.5);
     padding: var(--space-8) var(--space-12);
     border-radius: var(--radius-lg);
-    border: 1px solid rgba(120, 160, 240, 0.25);
-    box-shadow: 
-        0 4px 12px rgba(120, 160, 240, 0.08);
     backdrop-filter: blur(12px);
     transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Темная тема */
+.subscribers-badge {
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(35, 35, 40, 0.5);
+    border: 1px solid rgba(120, 160, 240, 0.25);
+    box-shadow: 0 4px 12px rgba(120, 160, 240, 0.08);
 }
 
 .subscribers-badge:hover {
-    box-shadow: 
-        0 8px 20px rgba(120, 160, 240, 0.12);
+    box-shadow: 0 8px 20px rgba(120, 160, 240, 0.12);
+    transform: translateY(-2px);
+    border-color: rgba(120, 160, 240, 0.35);
+    background: rgba(45, 45, 50, 0.6);
+}
+
+/* Светлая тема */
+@media (prefers-color-scheme: light) {
+    .subscribers-badge {
+        color: rgba(0, 0, 0, 0.85);
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(59, 130, 246, 0.25);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08);
+    }
+
+    .subscribers-badge:hover {
+        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.12);
+        transform: translateY(-2px);
+        border-color: rgba(59, 130, 246, 0.35);
+        background: rgba(255, 255, 255, 0.85);
+    }
+}
+
+/* Ручное управление темами через data-атрибут */
+[data-color-scheme="light"] .subscribers-badge {
+    color: rgba(0, 0, 0, 0.85);
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08);
+}
+
+[data-color-scheme="light"] .subscribers-badge:hover {
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.12);
+    transform: translateY(-2px);
+    border-color: rgba(59, 130, 246, 0.35);
+    background: rgba(255, 255, 255, 0.85);
+}
+
+[data-color-scheme="dark"] .subscribers-badge {
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(35, 35, 40, 0.5);
+    border: 1px solid rgba(120, 160, 240, 0.25);
+    box-shadow: 0 4px 12px rgba(120, 160, 240, 0.08);
+}
+
+[data-color-scheme="dark"] .subscribers-badge:hover {
+    box-shadow: 0 8px 20px rgba(120, 160, 240, 0.12);
     transform: translateY(-2px);
     border-color: rgba(120, 160, 240, 0.35);
     background: rgba(45, 45, 50, 0.6);
