@@ -10,12 +10,11 @@
 
 [![Смотреть видео демонстрации](https://img.shields.io/badge/▶️_Смотреть_видео_демонстрации-FF6B6B?style=for-the-badge&logo=github&logoColor=white)](https://github.com/user-attachments/assets/95e1e94c-628f-4895-90f7-65589e042b20)
 
-*Прямая ссылка: `https://github.com/user-attachments/assets/95e1e94c-628f-4895-90f7-65589e042b20`*
-
 </div>
 
 ## Developers
 
+| Role | Name |
 |------|------------|
 | Backend + DevOps | **Владимир** |
 | Frontend | **Даниил** |
