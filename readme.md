@@ -34,8 +34,3 @@ docker run -d --name running-app -p 8000:8000 --memory=1g --memory-swap=2g --cpu
 ```
 open Frontend/index.html
 ```
-
-
-## 📁 Структура проекта
-
-[Добавьте здесь структуру проекта]
